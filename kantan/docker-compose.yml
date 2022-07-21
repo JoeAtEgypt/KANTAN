@@ -1,0 +1,39 @@
+version: '3.10'
+
+services:
+  db:
+    image: postgres:10-alpine
+    environment:
+      - POSTGRES_DB=brandit
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=P0StgreS
+    ports:
+      - 5434:5432
+    expose:
+      - 5434
+
+  django:
+    tty: true
+    stdin_open: true
+    build: .
+    volumes:
+      - .:/Kantan_Back
+    command: >
+            sh -c "python /BrandIt_Back/BrandIt/manage.py collectstatic --noinput &&
+                   python /BrandIt_Back/BrandIt/manage.py makemigrations &&
+                   python /BrandIt_Back/BrandIt/manage.py migrate &&
+
+                   python /BrandIt_Back/BrandIt/manage.py runserver 0.0.0.0:2002"
+    restart: always
+    expose:
+      - 2000
+    ports:
+      - 2000:2000
+    environment:
+      - DB_HOST=db
+      - POSTGRES_NAME=kantan
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=P0StgreS
+      - POSTGRES_PORT=5432
+    depends_on:
+      - db
