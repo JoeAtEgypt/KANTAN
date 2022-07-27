@@ -4,13 +4,13 @@ services:
   db:
     image: postgres:10-alpine
     environment:
-      - POSTGRES_DB=brandit
+      - POSTGRES_DB=kantan
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=P0StgreS
     ports:
-      - 5434:5432
+      - 5435:5432
     expose:
-      - 5434
+      - 5435
 
   django:
     tty: true
@@ -19,11 +19,11 @@ services:
     volumes:
       - .:/Kantan_Back
     command: >
-            sh -c "python /BrandIt_Back/BrandIt/manage.py collectstatic --noinput &&
-                   python /BrandIt_Back/BrandIt/manage.py makemigrations &&
-                   python /BrandIt_Back/BrandIt/manage.py migrate &&
+            sh -c "python backend/manage.py collectstatic --noinput &&
+                   python backend/manage.py makemigrations &&
+                   python backend/manage.py migrate &&
 
-                   python /BrandIt_Back/BrandIt/manage.py runserver 0.0.0.0:2002"
+                   python backend/manage.py runserver 0.0.0.0:2000"
     restart: always
     expose:
       - 2000
