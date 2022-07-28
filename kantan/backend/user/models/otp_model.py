@@ -12,7 +12,8 @@ class OTP(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         import random
-        self.code = create_activation_code(random.randint(1000, 9999))
+        self.code = random.randint(1000, 9999)
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = 'OTPs'
